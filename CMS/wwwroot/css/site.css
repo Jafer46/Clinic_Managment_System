@@ -1,0 +1,116 @@
+
+
+
+
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+i {
+    /*color: #54F09D !important;*/
+    color: #87dcd4 !important;
+}
+
+li, p {
+    /* color: #236341 !important;*/
+    color: #00302C !important;
+}
+
+p{
+    padding-left: 15px !important;
+    font-size:medium !important;
+}
+li {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+}
+
+.active{
+    background-color: #fff !important;
+}
+
+.logo-style {
+    height: 8vh;
+    background-color: #fff !important;
+    border-bottom: 0 !important;
+}
+
+.logo-text{
+    font-size:large !important;
+    padding-left: 20px !important;
+}
+.content-header {
+    padding-top: 20px !important;
+    height: 20vh !important;
+}
+.content-header {
+    background-color: #63c6b2 !important;
+}
+.content-header h1{
+    color: #fff !important;
+}
+ol li {
+    color: #fff !important;
+}
+.card-body a {
+    color: #87dcd4 !important;
+}
+.form-inline{
+    margin-top: 10px;
+    border: 1px solid #87dcd4 !important;
+}
+.form-inline .form-control {    
+    border: 0 !important;
+}
+.form-control-sidebar,.btn-sidebar{
+    border: 0 !important;
+    background-color: #fff !important;
+}
+.form-control-sidebar,.form-control-navbar,.form-inline, .btn-sidebar, .btn-navbar:nth-of-type(2){
+    border-radius: 2rem !important;
+}
+.form-control-navbar{
+    border-end-end-radius: 0 !important;
+    border-start-end-radius: 0 !important;
+}
+.btn-navbar:nth-of-type(2) {
+    border-end-start-radius: 0 !important;
+    border-start-start-radius: 0 !important;
+}
+.form-control-navbar, .btn-navbar{
+    background-color: #fff !important;
+}
+.btn-green {
+    color: #fff !important;
+    background-color: #63c6b2 !important;
+}
+.rounded-big{
+    border-radius: 4rem !important;
+}
+.rounded-small{
+    border-radius: 2rem !important;
+}
+.bg-cloud{
+    background-image: url("../img/bg-blurry.jpg") !important;
+    background-size: cover !important;
+}
+
+
+
