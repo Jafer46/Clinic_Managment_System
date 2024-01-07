@@ -1,0 +1,52 @@
+﻿@using CMS.Models
+@inject IHttpContextAccessor _httpContextAccessor
+@model BALibrary.Medical.Session
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+    string pageName = ViewContext.RouteData.Values["controller"].ToString();
+    string areaName = ViewContext.RouteData.Values["area"].ToString();
+    int userRoleId = Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetString(SessionVariable.SessionKeyUserRoleId));
+
+}
+
+<h1>Create</h1>
+
+<h4>Session</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PatientId" class="control-label"></label>
+                <select asp-for="PatientId" class ="form-control" asp-items="ViewBag.PatientId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SartDateTime" class="control-label"></label>
+                <input asp-for="SartDateTime" class="form-control" value="@DateTime.Today"/>
+                <span asp-validation-for="SartDateTime" class="text-danger" ></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocterId" class="control-label"></label>
+                <select asp-for="DocterId" class ="form-control" asp-items="ViewBag.DocterId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <select asp-for="Status" class ="form-control" asp-items="ViewBag.Status"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

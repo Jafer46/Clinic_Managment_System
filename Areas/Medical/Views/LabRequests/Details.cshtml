@@ -1,0 +1,108 @@
+﻿@using CMS.Models
+@inject IHttpContextAccessor _httpContextAccessor
+@model BALibrary.Medical.LabRequest
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+    string pageName = ViewContext.RouteData.Values["controller"].ToString();
+    string areaName = ViewContext.RouteData.Values["area"].ToString();
+    int userRoleId = Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetString(SessionVariable.SessionKeyUserRoleId));
+
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>LabRequest</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Session.Patient.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Session.Patient.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            Requested By
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Session.Docter.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Session)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Session.Id)
+        </dd>
+    </dl>
+</div>
+@if (Common.isAuthorized(userRoleId, areaName, "LabRequestDetails", "Create"))
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            Lab Requests detail
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="LabRequestDetails" asp-action="Create" asp-route-id="@Model.Id">Add</a>
+        </dd>
+    </dl>
+}
+<div>
+    More Detail
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Case
+            </th>
+            <th>
+                CaseDetail
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Detail)
+        {
+            <tr>
+                <td>
+                    @item.Case
+                </td>
+                <td>
+                    @item.CaseDetail
+                </td>
+                <td>
+                    @if (Common.isAuthorized(userRoleId, areaName, "LabRequestDetails", "Edit"))
+                    {
+                        <a asp-controller="LabRequestDetails" asp-action="Edit" asp-route-id="@item.Id">Edit</a><span>|</span>
+                    }
+                    @if (Common.isAuthorized(userRoleId, areaName, "LabRequestDetails", "Details"))
+                    {
+                        <a asp-controller="LabRequestDetails" asp-action="Details" asp-route-id="@item.Id">Details</a><span>|</span>
+                    }
+                    @if (Common.isAuthorized(userRoleId, areaName, "LabRequestDetails", "Delete"))
+                    {
+                        <a asp-controller="LabRequestDetails" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @if (Common.isAuthorized(userRoleId, areaName, pageName, "Edit"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a><span>|</span>
+    }
+    @if(Common.isAuthorized(userRoleId, areaName, pageName, "Index"))
+    {
+        <a asp-action="Index">Back to List</a><span>|</span>
+    }
+    @if(Common.isAuthorized(userRoleId, areaName, "LabReports", "Index"))
+    {
+        <a asp-controller="LabReports" asp-action="Index">Back to reports</a>
+    }
+    
+</div>
