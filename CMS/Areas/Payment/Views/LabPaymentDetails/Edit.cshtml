@@ -1,0 +1,46 @@
+﻿
+@model BALibrary.Payment.LabPaymentDetail
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>LabPaymentDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="LabPaymentId" class="control-label"></label>
+                <Select asp-for="LabPaymentId" class="form-control" asp-items="ViewBag.LabPaymentId"></Select>
+                <span asp-validation-for="LabPaymentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reason" class="control-label"></label>
+                <Select asp-for="Reason" class="form-control" asp-items="ViewBag.LabRequestDetail"></Select>
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href='javascript:history.go(-1)'>Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

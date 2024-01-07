@@ -1,0 +1,141 @@
+﻿@using CMS.Models
+@inject IHttpContextAccessor _httpContextAccessor
+@model BALibrary.Patient.PatientRecord
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+    string pageName = ViewContext.RouteData.Values["controller"].ToString();
+    string areaName = ViewContext.RouteData.Values["area"].ToString();
+    int userRoleId = Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetString(SessionVariable.SessionKeyUserRoleId));
+
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>PatientRecord</h4>
+    <hr />
+</div>
+@if (Common.isAuthorized(userRoleId, "Medical", "Sessions", "Details"))
+{
+    <div class="">
+        <h5>Session</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Patient's Name</th>
+                    <th>Docter's Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@ViewBag.Session.Patient.FirstName</td>
+                    <td>@ViewBag.Session.Docter.LastName</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+@if (ViewBag.RecordSummary != null)
+{
+    if (Common.isAuthorized(userRoleId, "Patient", "RecordSummaries", "Details"))
+    {
+        <div>
+            <h5>Record Summary</h5>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Descrption</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@ViewBag.RecordSummary.Name</td>
+                        <td>@ViewBag.RecordSummary.Description</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+}
+@if (Common.isAuthorized(userRoleId, "Payment", "CardPayments", "Index"))
+{
+    <div>
+        <h5>Card Payment</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Checked</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@ViewBag.CardPayment.Amount</td>
+                    <td>@ViewBag.CardPayment.Date</td>
+                    <td>@ViewBag.CardPayment.Checked</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+@if (ViewBag.Triage != null)
+{
+    @if (Common.isAuthorized(userRoleId, "Triage", "PatientTriages", "Details"))
+    {
+        <div>
+            <h5>PatientTriage</h5>
+            <hr />
+            <dl class="row">
+                <dt class = "col-sm-2">
+                    Priority
+                </dt>
+                <dd class = "col-sm-10">
+                    @ViewBag.Triage.Priority
+                </dd>
+            </dl>
+        </div>
+        @if (ViewBag.TriageDetails != null)
+        {
+            <div>
+                Triage Details
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Case
+                        </th>
+                        <th>
+                            Case Details
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.TriageDetails)
+                    {
+                        <tr>
+                            <td>
+                                @item.Case
+                            </td>
+                            <td>
+                                @item.CaseDetail
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+             </table>
+        }
+    }
+}
+<div>
+    @if (Common.isAuthorized(userRoleId, areaName, pageName, "Delete"))
+    {
+        <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a><span>|</span>
+    }
+    <a href='javascript:history.go(-1)'>Back to List</a>
+</div>

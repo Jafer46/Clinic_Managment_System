@@ -1,0 +1,50 @@
+﻿@using CMS.Models
+@inject IHttpContextAccessor _httpContextAccessor
+@model BALibrary.Payment.LabPaymentDetail
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+    string pageName = ViewContext.RouteData.Values["controller"].ToString();
+    string areaName = ViewContext.RouteData.Values["area"].ToString();
+    int userRoleId = Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetString(SessionVariable.SessionKeyUserRoleId));
+
+}
+
+<h1>Create</h1>
+
+<h4>LabPaymentDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="text-danger">@ViewBag.LabPaymentError</div>
+            <div class="form-group">
+                <label asp-for="LabPaymentId" class="control-label"></label>
+                <Select asp-for="LabPaymentId" class="form-control" asp-items="ViewBag.LabPaymentId"></Select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reason" class="control-label"></label>
+                <Select asp-for="Reason" class="form-control" asp-items="ViewBag.LabRequestDetail"></Select>
+                <span asp-validation-for="Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href='javascript:history.go(-1)'>Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,239 @@
+﻿@using CMS.Models
+@inject IHttpContextAccessor _httpContextAccessor
+@model BALibrary.Medical.Session
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Dashboard/Views/Shared/_Layout.cshtml";
+    string pageName = ViewContext.RouteData.Values["controller"].ToString();
+    string areaName = ViewContext.RouteData.Values["area"].ToString();
+    int userRoleId = Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetString(SessionVariable.SessionKeyUserRoleId));
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Session</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SartDateTime)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SartDateTime)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Patient)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Patient.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            Assigned Docter
+        </dt>
+        <dd class = "col-sm-10">
+            Dr. @Html.DisplayFor(model => model.Docter.FirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SessionStatus)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SessionStatus.Name)
+        </dd>
+    </dl>
+</div>
+
+@if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Create"))
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            Lab request
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-controller="LabRequests" asp-action="Create" asp-route-id="@Model.Id">Add</a>
+        </dd>
+    </dl>
+}
+@if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Index"))
+{
+<div>
+    All Lab Requests on this session
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                SessionId
+            </th>
+            <th>
+                Add payment
+            </th>
+            <th>
+                See Report
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.Detail)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.SessionId
+                </td>
+                <td>
+                    @if(item.Session.SessionStatus.Name.ToLower() != "ended")
+                    {
+                        @if (Common.isAuthorized(userRoleId, "Payment", "LabPayments", "Create"))
+                        {
+                            <a asp-area="Payment" asp-controller="LabPayments" asp-action="Create" asp-route-id="@item.Id">Add</a>
+                        }                        
+                    }                    
+                </td>
+                <td>                    
+                    @if (Common.isAuthorized(userRoleId, areaName, "Labreports", "Index"))
+                    {
+                        <a asp-controller="Labreports" asp-action="Index" asp-route-id="@item.Id">See</a>
+                    }
+                </td>
+                <td>
+                    @if (item.Session.SessionStatus.Name.ToLower() != "ended")
+                    {
+                        @if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Edit"))
+                        {
+                            <a asp-controller="LabRequests" asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span>|</span>
+                        }
+                        @if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Details"))
+                        {
+                            <a asp-controller="LabRequests" asp-action="Details" asp-route-id="@item.Id">Details</a> <span>|</span>
+                        }
+                        @if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Delete"))
+                        {
+                            <a asp-controller="LabRequests" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }                       
+                  
+                    }else
+                    {
+                        @if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Details"))
+                        {
+                          <a asp-controller="LabRequests" asp-action="Details" asp-route-id="@item.Id">Details</a>  
+                        }                        
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+}
+@if (Common.isAuthorized(userRoleId, areaName, "LabRequests", "Index") && ViewBag.PatientRecord!=null)
+{
+    <div>
+        Patient Records
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    Leave Date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.PatientRecord)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.LeaveDate
+                    </td>
+                    <td>
+                        @if (Common.isAuthorized(userRoleId, "Patient", "PatientRecords", "Details"))
+                        {
+                            <a asp-area="Patient" asp-controller="PatientRecords" asp-action="Details" asp-route-id="@item.Id">Details</a><sap>|</sap>
+                        }
+                        @if (Common.isAuthorized(userRoleId, "Patient", "PatientRecords", "Delete"))
+                        {
+                            <a asp-area="Patient" asp-controller="PatientRecords" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@if (Common.isAuthorized(userRoleId, "Medicine", "Prescriptions", "Create"))
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            Prescriptions
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-area="Medicine" asp-controller="Prescriptions" asp-action="Create" asp-route-id="@Model.Id">Add prescription</a>
+        </dd>
+    </dl>
+}
+@if (Common.isAuthorized(userRoleId, "Medicine", "Prescriptions", "Index")&&ViewBag.Prescription != null)
+{
+    <div>
+        All prescriptions
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    Date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.Prescription)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Date
+                    </td>
+                    <td>
+                        @if (Common.isAuthorized(userRoleId, "Medicine", "Prescriptions", "Edit"))
+                        {
+                            <a asp-area="Medicine" asp-controller="Prescriptions" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+
+                            <sap>|</sap>
+                        }
+                        @if (Common.isAuthorized(userRoleId, "Medicine", "Prescriptions","Details"))
+                        {
+                            <a asp-area="Medicine" asp-controller="Prescriptions" asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                            <sap>|</sap>
+                        }
+                        @if (Common.isAuthorized(userRoleId, "Medicine", "Prescriptions", "Delete"))
+                        {
+                            <a asp-area="Medicine" asp-controller="Prescriptions" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div>
+    @if (Common.isAuthorized(userRoleId, areaName, pageName, "Edit"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a><span>|</span>
+    }
+    <a href='javascript:history.go(-1)'>Back to List</a>
+</div>
