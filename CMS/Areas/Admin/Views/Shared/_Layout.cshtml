@@ -1,0 +1,157 @@
+﻿@inject IHttpContextAccessor _httpContextAccessor;
+@using static CMS.Models.Common
+@{
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";   
+    string pageName = ViewContext.RouteData.Values["controller"].ToString();
+    string areaName = ViewContext.RouteData.Values["area"].ToString();
+   
+
+}
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar .sidebar-light-lime elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link bg-light logo-style" style="background-color: white !important">
+        <img src="~/dist/img/AdminLTELogo.png" alt="ClinciMS" class="brand-image img-circle " style="opacity: .8">
+        <span class="logo-text">ClinicMS</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar os-host os-host-resize-disabled os-host-transition os-host-overflow os-host-overflow-y os-host-scrollbar-horizontal-hidden os-theme-dark">
+
+       @* @Html.Partial("_CurrentUserPanel")*@
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search" >
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-compact nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+               
+              
+                
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                        <i class="nav-icon fas fa-th "></i>
+                        <p>
+                            Lookups
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">                
+                        <li class="nav-item">
+                            <a asp-controller="Users" asp-action="Index" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Users</p>
+                            </a>
+                        </li>                        
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="Roles" asp-action="Index" class="nav-link">
+                            <i class="far fa-circle nav-icon "></i>
+                            <p>Roles</p>
+                    </a>
+                </li>  
+                <li class="nav-item">
+                    <a asp-controller="Modules" asp-action="Index" class="nav-link">
+                        <i class="far fa-circle nav-icon "></i>
+                        <p>Modules</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="ModuleTables" asp-action="Index" class="nav-link">
+                        <i class="far fa-circle nav-icon "></i>
+                        <p>ModuleTables</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a asp-controller="RoleModules" asp-action="Index" class="nav-link">
+                        <i class="far fa-circle nav-icon "></i>
+                        <p>RoleModules</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="RoleModuleExceptions" asp-action="Index" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>RoleModuleExceptions</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="mb-2">
+                <div class="">
+                    <h1 class="m-0">@Html.DisplayName(pageName)</h1>
+                </div><!-- /.col -->
+                <div class="">
+                    <ol class="breadcrumb ">
+                        <li class="breadcrumb-item">@Html.DisplayName(areaName)</li>
+                        <li class="breadcrumb-item ">@Html.DisplayName(pageName)</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- CONTAINER -->
+            <div class="card card-outline card-border-rounded" style="padding-left:10px;padding-right:10px;">
+                <div class="card-header">
+                    <h3 class="card-title">Welcome: <span class="badge badge-info"><span></h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body p-0">
+                    @RenderBody()
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+    
+</div>
+<!-- /.content-wrapper -->
+@await RenderSectionAsync("Scripts", required: false)
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            var messageTypeItem = document.getElementById("messageType");
+            var messageItem = document.getElementById("message");
+
+            if (messageTypeItem.value == "success")
+                toastr.success(messageItem.value, "Success Message");
+            else if (messageTypeItem.value == "error")
+                toastr.error(messageItem.value, "Error Message");
+            else if (messageTypeItem.value == "info")
+                toastr.info(messageItem.value, "Info Message");
+            else if (messageTypeItem.value == "warning")
+                toastr.warning(messageItem.value, "Warning Message");
+        });
+        $('.content').css({ marginTop: '-=7vh' });
+    </script>
+}
